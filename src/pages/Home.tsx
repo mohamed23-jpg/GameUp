@@ -56,8 +56,9 @@ export default function Home() {
               className="flex flex-wrap gap-4 mt-4"
             >
               <a
-                href="/gameup.apk"
-                download="gameup.apk"
+                href="https://ithb.com/mohamed23-jpg/Co-clas"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group relative inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-widest overflow-hidden neon-border"
                 data-testid="btn-hero-download"
               >
