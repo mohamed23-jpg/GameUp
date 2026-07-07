@@ -1,0 +1,422 @@
+import { motion } from "framer-motion";
+import { Shield, Smartphone, Zap, Settings, Eye, Lock, Layers, Crosshair, Focus, Moon, Activity, Plus, Minus } from "lucide-react";
+import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useT } from "@/lib/translations";
+
+function OverlayMockup({ f }: { f: ReturnType<typeof useT>["features"] }) {
+  const [tab, setTab] = useState<0 | 1 | 2>(0);
+  const [minimized, setMinimized] = useState(false);
+  const [toggles, setToggles] = useState({ focus: false, accel: true, nv: false, perf: true });
+
+  const tabs = [f.tabCrosshair, f.tabQuick, f.tabApps];
+
+  const sliders = [
+    { label: f.s1Size, val: 65 },
+    { label: f.s1Length, val: 48 },
+    { label: f.s1Thickness, val: 30 },
+    { label: f.s1Opacity, val: 85 },
+  ];
+
+  const quickItems = [
+    { key: "focus" as const, label: f.focusMode, icon: Focus, color: "text-accent" },
+    { key: "accel" as const, label: f.gameAccel, icon: Zap, color: "text-primary" },
+    { key: "nv" as const, label: f.nightVision, icon: Moon, color: "text-secondary", badge: f.filters },
+    { key: "perf" as const, label: f.perfMonitor, icon: Activity, color: "text-primary" },
+  ];
+
+  if (minimized) {
+    return (
+      <div className="flex flex-col items-center gap-6">
+        <div className="text-xs text-muted-foreground font-display uppercase tracking-widest mb-2">
+          {f.f4li1}
+        </div>
+        <button
+          onClick={() => setMinimized(false)}
+          className="w-14 h-14 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center shadow-[0_0_20px_rgba(0,245,255,0.4)] hover:scale-110 transition-transform"
+          data-testid="btn-overlay-expand"
+        >
+          <Layers className="w-6 h-6 text-primary" />
+        </button>
+        <div className="text-xs text-primary font-display animate-pulse uppercase tracking-widest">tap to expand</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full max-w-sm mx-auto">
+      {/* Panel */}
+      <div className="bg-black/90 border border-primary/40 rounded-xl overflow-hidden shadow-[0_0_30px_rgba(0,245,255,0.15)]">
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-2 border-b border-primary/20 bg-primary/5">
+          <div className="flex items-center gap-2">
+            <Crosshair className="w-4 h-4 text-primary" />
+            <span className="text-primary font-display font-bold text-xs tracking-widest uppercase">GameUp Pro</span>
+          </div>
+          <button
+            onClick={() => setMinimized(true)}
+            className="w-6 h-6 border border-primary/40 flex items-center justify-center hover:bg-primary/20 transition-colors rounded"
+            data-testid="btn-overlay-minimize"
+            aria-label="Minimize overlay"
+          >
+            <Minus className="w-3 h-3 text-primary" />
+          </button>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex border-b border-primary/20">
+          {tabs.map((label, i) => (
+            <button
+              key={i}
+              onClick={() => setTab(i as 0 | 1 | 2)}
+              className={`flex-1 py-2 text-xs font-display uppercase tracking-wider transition-colors ${tab === i ? "text-primary border-b-2 border-primary bg-primary/10" : "text-muted-foreground hover:text-foreground"}`}
+              data-testid={`btn-overlay-tab-${i}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab Content */}
+        <div className="p-4 min-h-[200px]">
+          {tab === 0 && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+              {/* SVG crosshair preview */}
+              <div className="flex justify-center mb-3">
+                <div className="w-16 h-16 border border-primary/20 rounded-full flex items-center justify-center bg-primary/5">
+                  <svg viewBox="0 0 100 100" className="w-10 h-10 text-primary drop-shadow-[0_0_6px_rgba(0,245,255,0.8)]">
+                    <path d="M 50 20 L 50 40 M 50 60 L 50 80 M 20 50 L 40 50 M 60 50 L 80 50" stroke="currentColor" strokeWidth="6" strokeLinecap="square" />
+                    <circle cx="50" cy="50" r="3" fill="currentColor" />
+                  </svg>
+                </div>
+              </div>
+              {sliders.map((s, i) => (
+                <div key={i}>
+                  <div className="flex justify-between text-xs font-display mb-1">
+                    <span className="text-muted-foreground uppercase tracking-widest">{s.label}</span>
+                    <span className="text-primary">{s.val}%</span>
+                  </div>
+                  <div className="h-1.5 bg-muted/30 rounded-full overflow-hidden">
+                    <div className="h-full bg-primary rounded-full" style={{ width: `${s.val}%` }} />
+                  </div>
+                </div>
+              ))}
+              {/* Color swatches + shapes */}
+              <div className="flex items-center justify-between pt-1">
+                <div className="flex gap-1.5">
+                  {["#00f5ff","#ff0080","#00ff88","#ffffff","#ffff00"].map(c => (
+                    <div key={c} className="w-4 h-4 rounded-sm border border-white/10 cursor-pointer hover:scale-110 transition-transform" style={{ background: c }} />
+                  ))}
+                </div>
+                <div className="flex gap-1.5">
+                  {["+", "•", "○"].map(s => (
+                    <div key={s} className="w-6 h-6 border border-primary/30 flex items-center justify-center text-primary text-xs font-bold cursor-pointer hover:bg-primary/20 transition-colors rounded">
+                      {s}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {tab === 1 && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+              {quickItems.map(item => (
+                <div key={item.key} className="flex items-center justify-between py-1.5 border-b border-border/30">
+                  <div className="flex items-center gap-2">
+                    <item.icon className={`w-4 h-4 ${item.color}`} />
+                    <div>
+                      <div className="text-xs font-display font-bold text-foreground">{item.label}</div>
+                      {item.badge && (
+                        <div className="text-[10px] text-secondary font-display">{item.badge}</div>
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setToggles(p => ({ ...p, [item.key]: !p[item.key] }))}
+                    className={`w-10 h-5 rounded-full transition-colors relative ${toggles[item.key] ? "bg-primary" : "bg-muted/50"}`}
+                    data-testid={`btn-toggle-${item.key}`}
+                    aria-label={`Toggle ${item.label}`}
+                    aria-pressed={toggles[item.key]}
+                  >
+                    <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-all ${toggles[item.key] ? "left-5" : "left-0.5"}`} />
+                  </button>
+                </div>
+              ))}
+            </motion.div>
+          )}
+
+          {tab === 2 && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { label: "Calc", color: "bg-primary/20 border-primary/40 text-primary" },
+                  { label: "Notes", color: "bg-secondary/20 border-secondary/40 text-secondary" },
+                  { label: "Maps", color: "bg-accent/20 border-accent/40 text-accent" },
+                  { label: "Chat", color: "bg-primary/20 border-primary/40 text-primary" },
+                  { label: "Music", color: "bg-secondary/20 border-secondary/40 text-secondary" },
+                  { label: "+ " + f.addApp, color: "bg-muted/20 border-muted-foreground/20 text-muted-foreground" },
+                ].map((app, i) => (
+                  <div
+                    key={i}
+                    className={`border rounded-lg p-3 flex flex-col items-center justify-center gap-1 cursor-pointer hover:scale-105 transition-transform ${app.color}`}
+                  >
+                    <div className="w-6 h-6 rounded border border-current flex items-center justify-center">
+                      <Plus className="w-3 h-3" />
+                    </div>
+                    <span className="text-[10px] font-display text-center leading-tight">{app.label}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground text-center mt-3 font-sans">{f.s3Desc}</p>
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Features() {
+  const { lang } = useLanguage();
+  const t = useT(lang);
+  const f = t.features;
+
+  return (
+    <div className="w-full flex flex-col items-center">
+      {/* HEADER */}
+      <section className="w-full pt-20 pb-12 bg-background border-b border-primary/20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-5xl md:text-7xl font-display font-black tracking-tighter mb-4"
+          >
+            <span className="text-primary">{f.title}</span>
+          </motion.h1>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+            className="text-xl text-muted-foreground font-sans max-w-2xl">
+            {f.subtitle}
+          </motion.p>
+        </div>
+      </section>
+
+      {/* FEATURE 1: CROSSHAIR */}
+      <section className="w-full py-24 bg-card border-b border-border relative">
+        <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-16">
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-2 text-accent font-display tracking-widest uppercase mb-4 text-sm border border-accent/30 px-3 py-1 bg-accent/5">
+              <Eye className="w-4 h-4" /> {f.f1Label}
+            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-black mb-6">
+              {f.f1Title}{" "}
+              <span className="text-muted-foreground text-2xl font-sans font-normal block md:inline mt-2 md:mt-0">{f.f1Arabic}</span>
+            </h2>
+            <p className="text-lg text-muted-foreground font-sans mb-8 leading-relaxed">{f.f1Desc}</p>
+            <ul className="space-y-4 font-sans text-foreground">
+              {[f.f1li1, f.f1li2, f.f1li3, f.f1li4].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <div className="mt-1 w-2 h-2 bg-accent shrink-0" />{item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex-1 flex justify-center w-full">
+            <div className="relative w-full max-w-sm aspect-square bg-black border border-accent/50 rounded-lg overflow-hidden flex items-center justify-center group neon-border">
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#00ff881a_1px,transparent_1px),linear-gradient(to_bottom,#00ff881a_1px,transparent_1px)] bg-[size:20px_20px]" />
+              <div className="relative z-10 w-48 h-48 border border-accent/20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                <div className="absolute w-full h-[1px] bg-accent/40" />
+                <div className="absolute h-full w-[1px] bg-accent/40" />
+                <svg viewBox="0 0 100 100" className="w-24 h-24 text-accent drop-shadow-[0_0_8px_rgba(0,255,136,0.8)]">
+                  <path d="M 50 20 L 50 40 M 50 60 L 50 80 M 20 50 L 40 50 M 60 50 L 80 50" stroke="currentColor" strokeWidth="6" strokeLinecap="square" />
+                  <circle cx="50" cy="50" r="3" fill="currentColor" />
+                </svg>
+              </div>
+              <div className="absolute bottom-4 left-4 right-4 flex justify-between text-xs font-display text-accent uppercase">
+                <span>X: 50%</span><span>Opacity: 100%</span><span>Y: 50%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURE 2: DND */}
+      <section className="w-full py-24 bg-background border-b border-border relative">
+        <div className="container mx-auto px-4 flex flex-col lg:flex-row-reverse items-center gap-16">
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-2 text-secondary font-display tracking-widest uppercase mb-4 text-sm border border-secondary/30 px-3 py-1 bg-secondary/5">
+              <Shield className="w-4 h-4" /> {f.f2Label}
+            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-black mb-6">
+              {f.f2Title}{" "}
+              <span className="text-muted-foreground text-2xl font-sans font-normal block md:inline mt-2 md:mt-0">{f.f2Arabic}</span>
+            </h2>
+            <p className="text-lg text-muted-foreground font-sans mb-8 leading-relaxed">{f.f2Desc}</p>
+            <ul className="space-y-4 font-sans text-foreground">
+              {[f.f2li1, f.f2li2, f.f2li3, f.f2li4].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <div className="mt-1 w-2 h-2 bg-secondary shrink-0" />{item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex-1 w-full flex justify-center">
+            <div className="relative w-full max-w-sm h-80 bg-card border border-border rounded-xl overflow-hidden flex flex-col items-center justify-center p-8">
+              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,#ff0080_0,transparent_50%)]" />
+              <motion.div
+                animate={{ y: [-100, 20, 20, -100], opacity: [0, 1, 1, 0], scale: [1, 1, 0.9, 0.8] }}
+                transition={{ duration: 4, repeat: Infinity, times: [0, 0.1, 0.4, 0.5] }}
+                className="absolute top-4 w-64 bg-background border border-border rounded-lg shadow-xl p-3 flex items-center gap-3 z-10"
+              >
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                  <Smartphone className="w-4 h-4" />
+                </div>
+                <div className="flex-1">
+                  <div className="w-16 h-2 bg-muted rounded mb-1" />
+                  <div className="w-24 h-2 bg-muted/50 rounded" />
+                </div>
+              </motion.div>
+              <motion.div
+                animate={{ opacity: [0, 0, 1, 0], scale: [0.5, 0.5, 1.2, 1] }}
+                transition={{ duration: 4, repeat: Infinity, times: [0, 0.3, 0.4, 0.5] }}
+                className="absolute top-12 z-20"
+              >
+                <Shield className="w-16 h-16 text-secondary fill-secondary/20 drop-shadow-[0_0_15px_rgba(255,0,128,0.8)]" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-white font-bold text-xs uppercase tracking-wider">
+                  {f.blocked}
+                </div>
+              </motion.div>
+              <div className="mt-auto pt-8 flex items-center gap-2 text-secondary font-display uppercase tracking-widest text-sm">
+                <Lock className="w-4 h-4" /> {f.secureSession}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURE 3: RAM/CPU */}
+      <section className="w-full py-24 bg-card border-b border-border relative">
+        <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-16">
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-2 text-primary font-display tracking-widest uppercase mb-4 text-sm border border-primary/30 px-3 py-1 bg-primary/5">
+              <Zap className="w-4 h-4" /> {f.f3Label}
+            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-black mb-6">{f.f3Title}</h2>
+            <p className="text-lg text-muted-foreground font-sans mb-8 leading-relaxed">{f.f3Desc}</p>
+            <ul className="space-y-4 font-sans text-foreground">
+              {[f.f3li1, f.f3li2, f.f3li3, f.f3li4].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <div className="mt-1 w-2 h-2 bg-primary shrink-0" />{item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex-1 w-full flex justify-center">
+            <div className="relative w-full max-w-sm p-8 bg-background border border-border rounded-xl">
+              <div className="flex justify-between items-center mb-6 border-b border-border pb-4">
+                <span className="font-display font-bold text-muted-foreground">{f.sysMonitor}</span>
+                <Settings className="w-5 h-5 text-muted-foreground animate-[spin_4s_linear_infinite]" />
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <div className="flex justify-between font-display text-sm mb-2">
+                    <span className="text-primary uppercase tracking-widest">{f.cpuAlloc}</span>
+                    <span>{f.cpuMax}</span>
+                  </div>
+                  <div className="h-3 w-full bg-muted rounded-full overflow-hidden flex gap-1">
+                    {[...Array(20)].map((_, i) => (
+                      <motion.div key={i}
+                        animate={{ opacity: i < 16 ? [0.5, 1, 0.5] : 0.2 }}
+                        transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.1 }}
+                        className={`flex-1 h-full ${i < 12 ? "bg-primary" : i < 16 ? "bg-primary/70" : "bg-primary/20"}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between font-display text-sm mb-2">
+                    <span className="text-primary uppercase tracking-widest">{f.ramCleared}</span>
+                    <span>{f.ramFree}</span>
+                  </div>
+                  <div className="h-3 w-full bg-muted rounded-full overflow-hidden relative">
+                    <motion.div
+                      animate={{ width: ["40%", "85%"] }}
+                      transition={{ duration: 2, ease: "easeOut", repeat: Infinity, repeatType: "reverse", repeatDelay: 3 }}
+                      className="absolute left-0 top-0 h-full bg-primary"
+                    />
+                  </div>
+                </div>
+                <div className="pt-4 mt-4 border-t border-border flex justify-center">
+                  <div className="px-4 py-2 border border-primary text-primary font-display font-bold text-lg uppercase tracking-widest flex items-center gap-2">
+                    <Zap className="w-5 h-5" /> {f.boostActive}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURE 4: SMART OVERLAY PANEL */}
+      <section className="w-full py-24 bg-background border-b border-border relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(0,245,255,0.05),transparent_60%)] pointer-events-none" />
+        <div className="container mx-auto px-4 flex flex-col lg:flex-row-reverse items-start gap-16 relative z-10">
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-2 text-primary font-display tracking-widest uppercase mb-4 text-sm border border-primary/30 px-3 py-1 bg-primary/5">
+              <Layers className="w-4 h-4" /> {f.f4Label}
+            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-black mb-6">{f.f4Title}</h2>
+            <p className="text-lg text-muted-foreground font-sans mb-8 leading-relaxed">{f.f4Desc}</p>
+            <ul className="space-y-4 font-sans text-foreground mb-10">
+              {[f.f4li1, f.f4li2, f.f4li3, f.f4li4].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <div className="mt-1 w-2 h-2 bg-primary shrink-0" />{item}
+                </li>
+              ))}
+            </ul>
+
+            {/* Sub-section info cards */}
+            <div className="grid gap-4">
+              {[
+                { icon: Crosshair, title: f.s1Title, desc: f.s1Desc, color: "border-accent/30 text-accent" },
+                { icon: Zap,       title: f.s2Title, desc: f.gameAccelDesc, color: "border-primary/30 text-primary" },
+                { icon: Layers,    title: f.s3Title, desc: f.s3Desc, color: "border-secondary/30 text-secondary" },
+              ].map((card, i) => (
+                <motion.div key={i}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className={`p-4 bg-card border rounded-lg flex items-start gap-3 ${card.color}`}
+                >
+                  <card.icon className="w-5 h-5 shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-display font-bold text-sm uppercase tracking-wider mb-1">{card.title}</div>
+                    <div className="text-muted-foreground text-sm font-sans leading-relaxed">{card.desc}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Interactive Overlay Panel Mockup */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex-1 w-full flex flex-col items-center gap-4"
+          >
+            <div className="text-xs text-muted-foreground font-display uppercase tracking-widest mb-2">
+              — {f.f4Title} —
+            </div>
+            <OverlayMockup f={f} />
+            <div className="text-xs text-muted-foreground font-display uppercase tracking-widest mt-2 text-center">
+              {f.f4li1}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+}
