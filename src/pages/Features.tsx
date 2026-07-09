@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Smartphone, Zap, Settings, Eye, Lock, Layers, Crosshair, Focus, Moon, Activity, Plus, Minus } from "lucide-react";
+import { Shield, Smartphone, Zap, Settings, Eye, Lock, Layers, Crosshair, Focus, Moon, Activity, Plus, Minus, Gamepad2, Play, Trash2, Globe, Sun, LifeBuoy } from "lucide-react";
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useT } from "@/lib/translations";
@@ -415,6 +415,115 @@ export default function Features() {
               {f.f4li1}
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* FEATURE 5: GAMES LIBRARY */}
+      <section className="w-full py-24 bg-card border-b border-border relative">
+        <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-16">
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-2 text-secondary font-display tracking-widest uppercase mb-4 text-sm border border-secondary/30 px-3 py-1 bg-secondary/5">
+              <Gamepad2 className="w-4 h-4" /> {f.f5Label}
+            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-black mb-6">{f.f5Title}</h2>
+            <p className="text-lg text-muted-foreground font-sans mb-8 leading-relaxed">{f.f5Desc}</p>
+            <ul className="space-y-4 font-sans text-foreground">
+              {[f.f5li1, f.f5li2, f.f5li3, f.f5li4].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <div className="mt-1 w-2 h-2 bg-secondary shrink-0" />{item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex-1 w-full flex justify-center">
+            <div className="w-full max-w-sm bg-background border border-border rounded-xl overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                <span className="font-display font-bold text-sm uppercase tracking-widest text-secondary">{f.f5Title}</span>
+                <Plus className="w-4 h-4 text-muted-foreground" />
+              </div>
+              <div className="divide-y divide-border">
+                {[
+                  { name: "PUBG Mobile", color: "from-secondary/40 to-secondary/5" },
+                  { name: "Call of Duty", color: "from-primary/40 to-primary/5" },
+                  { name: "Free Fire", color: "from-accent/40 to-accent/5" },
+                ].map((game, i) => (
+                  <motion.div key={i}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex items-center gap-3 p-3"
+                  >
+                    <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${game.color} border border-white/10 flex items-center justify-center shrink-0`}>
+                      <Gamepad2 className="w-5 h-5 text-foreground/70" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-display font-bold truncate">{game.name}</div>
+                      <div className="h-1.5 w-2/3 bg-muted/40 rounded-full mt-2 overflow-hidden">
+                        <div className="h-full bg-secondary/60" style={{ width: `${70 - i * 15}%` }} />
+                      </div>
+                    </div>
+                    <button className="w-8 h-8 rounded-full bg-secondary/15 border border-secondary/40 flex items-center justify-center text-secondary shrink-0" aria-label="Launch">
+                      <Play className="w-3.5 h-3.5 fill-current" />
+                    </button>
+                    <Trash2 className="w-4 h-4 text-muted-foreground/50 shrink-0" />
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURE 6: LANGUAGES, THEMES & SUPPORT */}
+      <section className="w-full py-24 bg-background border-b border-border relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(0,255,136,0.05),transparent_60%)] pointer-events-none" />
+        <div className="container mx-auto px-4 flex flex-col lg:flex-row-reverse items-center gap-16 relative z-10">
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-2 text-accent font-display tracking-widest uppercase mb-4 text-sm border border-accent/30 px-3 py-1 bg-accent/5">
+              <Globe className="w-4 h-4" /> {f.f6Label}
+            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-black mb-6">{f.f6Title}</h2>
+            <p className="text-lg text-muted-foreground font-sans mb-8 leading-relaxed">{f.f6Desc}</p>
+            <ul className="space-y-4 font-sans text-foreground">
+              {[f.f6li1, f.f6li2, f.f6li3, f.f6li4].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <div className="mt-1 w-2 h-2 bg-accent shrink-0" />{item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex-1 w-full flex justify-center">
+            <div className="w-full max-w-sm p-6 bg-card border border-border rounded-xl space-y-6">
+              <div>
+                <div className="text-xs text-muted-foreground font-display uppercase tracking-widest mb-3">{f.f6li1}</div>
+                <div className="grid grid-cols-2 gap-2">
+                  {[f.langEN, f.langAR, f.langFA, f.langZH].map((l, i) => (
+                    <div key={l} className={`px-3 py-2 rounded-lg border text-xs font-display text-center ${i === 0 ? "border-accent bg-accent/10 text-accent" : "border-border text-muted-foreground"}`}>
+                      {l}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center justify-between border-t border-border pt-4">
+                <div className="flex items-center gap-2 text-sm font-display">
+                  <Sun className="w-4 h-4 text-accent" /> {f.themeLight}
+                </div>
+                <div className="w-12 h-6 rounded-full bg-muted/50 relative">
+                  <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-accent rounded-full shadow" />
+                </div>
+                <div className="flex items-center gap-2 text-sm font-display text-muted-foreground">
+                  <Moon className="w-4 h-4" /> {f.themeDark}
+                </div>
+              </div>
+              <div className="flex items-center gap-3 border-t border-border pt-4">
+                <div className="w-10 h-10 rounded-full bg-accent/10 border border-accent/40 flex items-center justify-center">
+                  <LifeBuoy className="w-5 h-5 text-accent" />
+                </div>
+                <span className="text-sm font-display font-bold uppercase tracking-widest">{f.supportCenter}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </div>

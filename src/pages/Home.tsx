@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { Crosshair, Shield, Zap, ChevronRight, Download, Activity, Cpu, Layers } from "lucide-react";
+import { Crosshair, Shield, Zap, ChevronRight, Download, Activity, Cpu, Layers, Gamepad2, Globe } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useT } from "@/lib/translations";
+import { Gallery } from "@/components/Gallery";
+
+const APK_URL = "https://uwgtfxujvufntydifbyq.supabase.co/storage/v1/object/public/Gameup/GamUp%20Pro.apk";
 
 export default function Home() {
   const { lang } = useLanguage();
@@ -56,7 +59,7 @@ export default function Home() {
               className="flex flex-wrap gap-4 mt-4"
             >
               <a
-                href="https://github.com/mohamed23-jpg/GameUp/releases/download/v1.0.0/gameup.apk"
+                href={APK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground font-display font-bold uppercase tracking-widest overflow-hidden neon-border"
@@ -190,12 +193,14 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-display font-black mb-4">{h.arsenalTitle}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">{h.arsenalDesc}</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { icon: Crosshair, title: h.crosshairTitle, desc: h.crosshairDesc, color: "text-primary", border: "hover:border-primary", glow: "group-hover:shadow-[0_0_30px_rgba(0,245,255,0.2)]" },
               { icon: Shield,    title: h.dndTitle,       desc: h.dndDesc,       color: "text-secondary", border: "hover:border-secondary", glow: "group-hover:shadow-[0_0_30px_rgba(255,0,128,0.2)]" },
               { icon: Cpu,       title: h.ramTitle,       desc: h.ramDesc,       color: "text-accent",    border: "hover:border-accent",    glow: "group-hover:shadow-[0_0_30px_rgba(0,255,136,0.2)]" },
               { icon: Layers,    title: h.overlayTitle,   desc: h.overlayDesc,   color: "text-primary",   border: "hover:border-primary",   glow: "group-hover:shadow-[0_0_30px_rgba(0,245,255,0.15)]" },
+              { icon: Gamepad2,  title: h.libraryTitle,   desc: h.libraryDesc,   color: "text-secondary", border: "hover:border-secondary", glow: "group-hover:shadow-[0_0_30px_rgba(255,0,128,0.2)]" },
+              { icon: Globe,     title: h.langTitle,      desc: h.langDesc,      color: "text-accent",    border: "hover:border-accent",    glow: "group-hover:shadow-[0_0_30px_rgba(0,255,136,0.2)]" },
             ].map((feat, i) => (
               <Link href="/features" key={i}>
                 <motion.div
@@ -218,6 +223,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <Gallery />
 
       {/* HOW IT WORKS */}
       <section className="w-full py-24 bg-card border-t border-border relative overflow-hidden">
