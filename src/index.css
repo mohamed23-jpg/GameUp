@@ -56,94 +56,86 @@
   --app-font-display: 'Orbitron', 'Cairo', sans-serif;
   --app-font-serif: Georgia, serif;
   --app-font-mono: Menlo, monospace;
-  --radius: 0rem; 
+  --radius: 0rem;
 
-  /* Light mode palette */
   --background: 240 20% 98%;
   --foreground: 240 20% 5%;
   --border: 240 20% 85%;
-  
   --card: 0 0% 100%;
   --card-foreground: 240 20% 5%;
   --card-border: 240 20% 90%;
-  
   --popover: 0 0% 100%;
   --popover-foreground: 240 20% 5%;
   --popover-border: 240 20% 90%;
-  
   --primary: 182 100% 40%;
   --primary-foreground: 0 0% 100%;
-  
   --secondary: 330 100% 45%;
   --secondary-foreground: 0 0% 100%;
-  
   --muted: 240 10% 90%;
   --muted-foreground: 240 10% 40%;
-  
   --accent: 152 100% 40%;
   --accent-foreground: 0 0% 100%;
-  
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  
   --input: 240 20% 85%;
   --ring: 182 100% 50%;
-  
   --chart-1: 182 100% 50%;
   --chart-2: 330 100% 50%;
   --chart-3: 152 100% 50%;
   --chart-4: 43 100% 50%;
   --chart-5: 280 100% 50%;
+
+  --opaque-button-border-intensity: -8;
+  --primary-border: hsl(var(--primary));
+  --secondary-border: hsl(var(--secondary));
+  --muted-border: hsl(var(--muted));
+  --accent-border: hsl(var(--accent));
+  --destructive-border: hsl(var(--destructive));
 }
 
 .dark {
-  /* Dark mode default - Cyberpunk */
-  --background: 240 20% 5%; /* #0a0a0f */
-  --foreground: 240 33% 91%; /* #e0e0f0 */
+  --background: 240 20% 5%;
+  --foreground: 240 33% 91%;
   --border: 240 10% 20%;
-  
-  --card: 240 17% 8%; /* #111118 */
+  --card: 240 17% 8%;
   --card-foreground: 240 33% 91%;
-  --card-border: 182 100% 50%; /* neon cyan border */
-  
+  --card-border: 182 100% 50%;
   --popover: 240 17% 8%;
   --popover-foreground: 240 33% 91%;
-  --popover-border: 330 100% 50%; /* neon magenta border */
-  
-  --primary: 182 100% 50%; /* #00f5ff */
+  --popover-border: 330 100% 50%;
+  --primary: 182 100% 50%;
   --primary-foreground: 240 20% 5%;
-  
-  --secondary: 330 100% 50%; /* #ff0080 */
+  --secondary: 330 100% 50%;
   --secondary-foreground: 240 33% 91%;
-  
   --muted: 240 17% 12%;
   --muted-foreground: 240 10% 60%;
-  
-  --accent: 152 100% 50%; /* #00ff88 */
+  --accent: 152 100% 50%;
   --accent-foreground: 240 20% 5%;
-  
   --destructive: 0 84% 60%;
   --destructive-foreground: 240 33% 91%;
-  
   --input: 240 17% 15%;
   --ring: 182 100% 50%;
-  
   --chart-1: 182 100% 50%;
   --chart-2: 330 100% 50%;
   --chart-3: 152 100% 50%;
   --chart-4: 43 100% 50%;
   --chart-5: 280 100% 50%;
+
+  --opaque-button-border-intensity: 9;
+  --primary-border: hsl(var(--primary));
+  --secondary-border: hsl(var(--secondary));
+  --muted-border: hsl(var(--muted));
+  --accent-border: hsl(var(--accent));
+  --destructive-border: hsl(var(--destructive));
 }
 
 @layer base {
   * {
     @apply border-border;
   }
-
   body {
     @apply font-sans antialiased bg-background text-foreground selection:bg-primary selection:text-primary-foreground;
   }
-  
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     text-transform: uppercase;
@@ -152,6 +144,9 @@
 }
 
 @layer utilities {
+  /* ── Glitch text ─────────────────────────────────────────────────────────
+     The pseudo-elements are invisible by default.
+     Add the .glitch-active class (via JS every 3 s) to fire the animation. */
   .glitch-text {
     position: relative;
     display: inline-block;
@@ -164,25 +159,30 @@
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.8;
+    opacity: 0;
+    pointer-events: none;
   }
-  .glitch-text::before {
+
+  /* Active state – runs for ~800 ms then stops */
+  .glitch-text.glitch-active::before {
     left: 2px;
     text-shadow: -1px 0 hsl(var(--secondary));
     clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim 5s infinite linear alternate-reverse;
+    animation: glitch-anim 0.8s steps(8) forwards;
+    opacity: 0.85;
   }
-  .glitch-text::after {
+  .glitch-text.glitch-active::after {
     left: -2px;
     text-shadow: -1px 0 hsl(var(--primary));
     clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim2 5s infinite linear alternate-reverse;
+    animation: glitch-anim2 0.8s steps(8) forwards;
+    opacity: 0.85;
   }
-  
+
   .font-display {
     font-family: var(--font-display);
   }
-  
+
   .neon-border {
     box-shadow: 0 0 10px hsl(var(--primary) / 0.5), inset 0 0 10px hsl(var(--primary) / 0.5);
     border: 1px solid hsl(var(--primary));
@@ -191,58 +191,35 @@
     box-shadow: 0 0 10px hsl(var(--secondary) / 0.5), inset 0 0 10px hsl(var(--secondary) / 0.5);
     border: 1px solid hsl(var(--secondary));
   }
-  
+
   .bg-grid {
     background-size: 40px 40px;
-    background-image: 
+    background-image:
       linear-gradient(to right, hsl(var(--border) / 0.2) 1px, transparent 1px),
       linear-gradient(to bottom, hsl(var(--border) / 0.2) 1px, transparent 1px);
   }
 }
 
 @keyframes glitch-anim {
-  0% { clip: rect(42px, 9999px, 44px, 0); }
-  5% { clip: rect(12px, 9999px, 59px, 0); }
-  10% { clip: rect(48px, 9999px, 29px, 0); }
-  15.0% { clip: rect(42px, 9999px, 73px, 0); }
-  20% { clip: rect(63px, 9999px, 27px, 0); }
-  25% { clip: rect(34px, 9999px, 55px, 0); }
-  30.0% { clip: rect(86px, 9999px, 73px, 0); }
-  35% { clip: rect(20px, 9999px, 20px, 0); }
-  40% { clip: rect(26px, 9999px, 60px, 0); }
-  45% { clip: rect(25px, 9999px, 66px, 0); }
-  50% { clip: rect(57px, 9999px, 98px, 0); }
-  55.0% { clip: rect(5px, 9999px, 46px, 0); }
-  60.0% { clip: rect(82px, 9999px, 31px, 0); }
-  65% { clip: rect(54px, 9999px, 27px, 0); }
-  70% { clip: rect(28px, 9999px, 99px, 0); }
-  75% { clip: rect(45px, 9999px, 69px, 0); }
-  80% { clip: rect(23px, 9999px, 85px, 0); }
-  85.0% { clip: rect(54px, 9999px, 84px, 0); }
-  90% { clip: rect(45px, 9999px, 47px, 0); }
-  95% { clip: rect(37px, 9999px, 20px, 0); }
-  100% { clip: rect(4px, 9999px, 91px, 0); }
+  0%   { clip: rect(42px, 9999px, 44px, 0); transform: translate(-2px, 0); }
+  12%  { clip: rect(12px, 9999px, 59px, 0); transform: translate(2px, 0); }
+  25%  { clip: rect(48px, 9999px, 29px, 0); transform: translate(-1px, 1px); }
+  37%  { clip: rect(42px, 9999px, 73px, 0); transform: translate(1px, 0); }
+  50%  { clip: rect(63px, 9999px, 27px, 0); transform: translate(-2px, -1px); }
+  62%  { clip: rect(34px, 9999px, 55px, 0); transform: translate(2px, 0); }
+  75%  { clip: rect(86px, 9999px, 73px, 0); transform: translate(-1px, 1px); }
+  87%  { clip: rect(20px, 9999px, 20px, 0); transform: translate(0, 0); }
+  100% { clip: rect(26px, 9999px, 60px, 0); transform: translate(0, 0); opacity: 0; }
 }
+
 @keyframes glitch-anim2 {
-  0% { clip: rect(65px, 9999px, 100px, 0); }
-  5% { clip: rect(52px, 9999px, 74px, 0); }
-  10% { clip: rect(79px, 9999px, 85px, 0); }
-  15.0% { clip: rect(75px, 9999px, 5px, 0); }
-  20% { clip: rect(67px, 9999px, 61px, 0); }
-  25% { clip: rect(14px, 9999px, 79px, 0); }
-  30.0% { clip: rect(1px, 9999px, 66px, 0); }
-  35% { clip: rect(86px, 9999px, 30px, 0); }
-  40% { clip: rect(23px, 9999px, 98px, 0); }
-  45% { clip: rect(85px, 9999px, 72px, 0); }
-  50% { clip: rect(71px, 9999px, 75px, 0); }
-  55.0% { clip: rect(2px, 9999px, 48px, 0); }
-  60.0% { clip: rect(30px, 9999px, 16px, 0); }
-  65% { clip: rect(59px, 9999px, 50px, 0); }
-  70% { clip: rect(41px, 9999px, 62px, 0); }
-  75% { clip: rect(2px, 9999px, 82px, 0); }
-  80% { clip: rect(47px, 9999px, 73px, 0); }
-  85.0% { clip: rect(3px, 9999px, 27px, 0); }
-  90% { clip: rect(26px, 9999px, 55px, 0); }
-  95% { clip: rect(42px, 9999px, 97px, 0); }
-  100% { clip: rect(38px, 9999px, 49px, 0); }
+  0%   { clip: rect(65px, 9999px, 100px, 0); transform: translate(2px, 0); }
+  12%  { clip: rect(52px, 9999px, 74px, 0); transform: translate(-2px, 0); }
+  25%  { clip: rect(79px, 9999px, 85px, 0); transform: translate(1px, -1px); }
+  37%  { clip: rect(75px, 9999px, 5px, 0);  transform: translate(-1px, 0); }
+  50%  { clip: rect(67px, 9999px, 61px, 0); transform: translate(2px, 1px); }
+  62%  { clip: rect(14px, 9999px, 79px, 0); transform: translate(-2px, 0); }
+  75%  { clip: rect(1px,  9999px, 66px, 0); transform: translate(1px, 0); }
+  87%  { clip: rect(86px, 9999px, 30px, 0); transform: translate(0, 0); }
+  100% { clip: rect(23px, 9999px, 98px, 0); transform: translate(0, 0); opacity: 0; }
 }
