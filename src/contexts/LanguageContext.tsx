@@ -1,42 +1,31 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 export type Lang = "en" | "ar";
 
-interface LanguageContextValue {
+interface LanguageContextType {
   lang: Lang;
-  setLang: (l: Lang) => void;
+  setLang: (lang: Lang) => void;
 }
 
-const LanguageContext = createContext<LanguageContextValue>({
+const LanguageContext = createContext<LanguageContextType>({
   lang: "en",
   setLang: () => {},
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Lang>(() => {
-    try {
-      return (localStorage.getItem("game-booster-lang") as Lang) || "en";
-    } catch {
-      return "en";
-    }
+    const stored = localStorage.getItem("game-booster-lang");
+    return stored === "ar" ? "ar" : "en";
   });
 
-  const setLang = (l: Lang) => {
-    setLangState(l);
-    try {
-      localStorage.setItem("game-booster-lang", l);
-    } catch {}
+  const setLang = (newLang: Lang) => {
+    setLangState(newLang);
+    localStorage.setItem("game-booster-lang", newLang);
   };
 
   useEffect(() => {
-    const root = document.documentElement;
-    if (lang === "ar") {
-      root.setAttribute("dir", "rtl");
-      root.setAttribute("lang", "ar");
-    } else {
-      root.setAttribute("dir", "ltr");
-      root.setAttribute("lang", "en");
-    }
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    document.documentElement.lang = lang;
   }, [lang]);
 
   return (
