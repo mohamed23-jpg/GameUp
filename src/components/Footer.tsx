@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Send, MapPin, User, Cpu } from "lucide-react";
+import { Send, MapPin, User, Gamepad2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useT } from "@/lib/translations";
 
@@ -10,12 +10,11 @@ export function Footer() {
   return (
     <footer className="border-t border-primary/20 bg-card py-12 relative overflow-hidden">
       <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
-
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="inline-flex items-center gap-2 mb-4">
-              <Cpu className="w-6 h-6 text-primary" />
+              <Gamepad2 className="w-6 h-6 text-primary" />
               <span className="font-display font-bold text-2xl tracking-widest text-foreground">
                 GAMEUP <span className="text-primary">PRO</span>
               </span>
@@ -28,7 +27,6 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 border border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all duration-300 uppercase tracking-widest text-sm font-bold"
-              data-testid="link-footer-telegram"
             >
               <Send className="w-4 h-4" />
               {t.footer.telegramBtn}
@@ -45,12 +43,12 @@ export function Footer() {
                 <span>Mohamed Adel</span>
               </li>
               <li className="flex items-center gap-2">
-                <Cpu className="w-4 h-4 text-primary shrink-0" />
+                <Gamepad2 className="w-4 h-4 text-primary shrink-0" />
                 <span>M.ADEL hub</span>
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-primary shrink-0" />
-                <span>Egypt, Monufia, Senegerg</span>
+                <span>Egypt, Monufia</span>
               </li>
             </ul>
           </div>

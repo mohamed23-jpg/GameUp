@@ -48,7 +48,6 @@ export function Gallery() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               className="flex flex-col items-center gap-3"
-              data-testid={`gallery-shot-${i}`}
             >
               <div className="relative w-full aspect-[16/10] rounded-xl border-2 border-border bg-black overflow-hidden shadow-xl group">
                 <img
