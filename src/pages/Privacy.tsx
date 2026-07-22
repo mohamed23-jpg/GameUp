@@ -10,8 +10,6 @@ export default function Privacy() {
 
   return (
     <div className="w-full flex flex-col items-center">
-
-      {/* HEADER */}
       <section className="w-full pt-20 pb-12 bg-background border-b border-border relative overflow-hidden">
         <div className="absolute inset-0 bg-grid opacity-[0.03] pointer-events-none" />
         <div className="container mx-auto px-4 relative z-10 max-w-4xl">
@@ -36,12 +34,9 @@ export default function Privacy() {
         </div>
       </section>
 
-      {/* CONTENT */}
       <section className="w-full py-16 bg-card">
         <div className="container mx-auto px-4 max-w-4xl">
-
           <div className="prose prose-invert prose-p:font-sans prose-headings:font-display prose-headings:uppercase prose-headings:tracking-widest max-w-none">
-
             <div className="p-6 border border-primary/20 bg-primary/5 rounded-lg mb-12 flex gap-4 items-start">
               <Server className="w-8 h-8 text-primary shrink-0 mt-1" />
               <div>
@@ -49,10 +44,8 @@ export default function Privacy() {
                 <p className="text-muted-foreground m-0 leading-relaxed">{p.zeroDesc}</p>
               </div>
             </div>
-
             <h2 className="text-2xl text-foreground border-b border-border pb-2">{p.s1Title}</h2>
             <p className="text-muted-foreground">{p.s1Text}</p>
-
             <h2 className="text-2xl text-foreground border-b border-border pb-2 mt-12">{p.s2Title}</h2>
             <p className="text-muted-foreground">{p.s2Text}</p>
             <ul className="text-muted-foreground">
@@ -61,10 +54,8 @@ export default function Privacy() {
               <li><strong className="text-foreground">{p.s2li3Bold}</strong>{p.s2li3}</li>
             </ul>
             <p className="text-muted-foreground">{p.s2Extra}</p>
-
             <h2 className="text-2xl text-foreground border-b border-border pb-2 mt-12">{p.s3Title}</h2>
             <p className="text-muted-foreground">{p.s3Text}</p>
-
             <h2 className="text-2xl text-foreground border-b border-border pb-2 mt-12">{p.s4Title}</h2>
             <div className="bg-background border border-border p-6 rounded mt-4">
               <ul className="list-none pl-0 m-0 space-y-3 font-sans text-muted-foreground">
@@ -82,14 +73,11 @@ export default function Privacy() {
                 </li>
               </ul>
             </div>
-
             <h2 className="text-2xl text-foreground border-b border-border pb-2 mt-12">{p.s5Title}</h2>
             <p className="text-muted-foreground">{p.s5Text}</p>
-
           </div>
         </div>
       </section>
-
     </div>
   );
 }
